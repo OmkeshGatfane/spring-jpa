@@ -6,7 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-
+/**
+ * Address entity representing an address record in the database.
+ * fields: id, street, city, country.
+ */
 @Entity
 @Data
 public class Address {
