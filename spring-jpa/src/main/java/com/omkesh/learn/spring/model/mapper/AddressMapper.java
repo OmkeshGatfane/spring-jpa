@@ -2,13 +2,15 @@ package com.omkesh.learn.spring.model.mapper;
 
 import com.omkesh.learn.spring.entity.Address;
 import com.omkesh.learn.spring.model.Dao.AddressDao;
+import org.springframework.stereotype.Component;
 
 /**
  * AddressMapper is responsible for mapping between Address entity and AddressDao.
  */
-public class AddressMapper {
+@Component
+public class AddressMapper implements Mapper<AddressDao, Address> {
 
-    public static Address mappingToEntity(AddressDao addressDao) {
+    public Address mappingToEntity(AddressDao addressDao) {
         Address address = new Address();
         address.setStreet(addressDao.getStreet());
         address.setCity(addressDao.getCity());
@@ -16,7 +18,7 @@ public class AddressMapper {
         return address;
     }
 
-    public static AddressDao mappingFromEntity(Address address) {
+    public AddressDao mappingFromEntity(Address address) {
         AddressDao addressDao = new AddressDao();
         addressDao.setStreet(address.getStreet());
         addressDao.setCity(address.getCity());

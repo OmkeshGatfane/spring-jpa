@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class AddressService {
     private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
     /**
      * Constructor for AddressService
@@ -21,18 +22,19 @@ public class AddressService {
      * @param addressRepository AddressRepository instance
      */
     @Autowired
-    public AddressService(AddressRepository addressRepository) {
+    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
         this.addressRepository = addressRepository;
+        this.addressMapper = addressMapper;
     }
 
     /**
-     * Get Address by ID
+     * Get Addre
      *
      * @param id Address ID
      * @return AddressDao object if found, otherwise null
      */
     public AddressDao getAddressById(Long id) {
-        return addressRepository.findById(id).map(AddressMapper::mappingFromEntity).orElse(null);
+        return addressRepository.findById(id).map(addressMapper::mappingFromEntity).orElse(null);
     }
 
     /**
@@ -42,7 +44,7 @@ public class AddressService {
      * @return Saved AddressDao object
      */
     public AddressDao saveAddress(AddressDao address) {
-        return AddressMapper.mappingFromEntity(addressRepository.save(AddressMapper.mappingToEntity(address)));
+        return addressMapper.mappingFromEntity(addressRepository.save(addressMapper.mappingToEntity(address)));
     }
 
     /**
@@ -57,7 +59,7 @@ public class AddressService {
             existingAddress.setStreet(address.getStreet());
             existingAddress.setCity(address.getCity());
             existingAddress.setCountry(address.getCountry());
-            return AddressMapper.mappingFromEntity(addressRepository.save(existingAddress));
+            return addressMapper.mappingFromEntity(addressRepository.save(existingAddress));
         }).orElse(null);
     }
 
@@ -70,7 +72,7 @@ public class AddressService {
     public AddressDao deleteAddress(Long id) {
         return addressRepository.findById(id).map(existingAddress -> {
             addressRepository.delete(existingAddress);
-            return AddressMapper.mappingFromEntity(existingAddress);
+            return addressMapper.mappingFromEntity(existingAddress);
         }).orElse(null);
     }
 
@@ -87,7 +89,7 @@ public class AddressService {
                 .filter(address -> (id == null || address.getId().equals(id)) &&
                         (city == null || address.getCity().equalsIgnoreCase(city)) &&
                         (country == null || address.getCountry().equalsIgnoreCase(country)))
-                .map(AddressMapper::mappingFromEntity)
+                .map(addressMapper::mappingFromEntity)
                 .toList();
     }
 }
